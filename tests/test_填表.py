@@ -1,3 +1,6 @@
+"""默認=happycase"""
+import datetime
+
 
 def test_整合測試_填表():
     """填寫更加好報表"""
@@ -45,7 +48,7 @@ def test_整合測試_填表():
     assert 更加好報表_機器人_週銷售row == 更加好報表_手打_週銷售row
 
 def test_整合測試_更新config():
-    """
+    """！這是手工
     進去google drive 填寫 config
     點擊發動，讓機器人跑一遍
     確認報表如預期產生
@@ -61,3 +64,54 @@ def test_讀取gooleDrive上config():
     設定_f = open('設定.json')
     設定 = json.load(設定_f)
     assert 設定[0].keys() == 下載的設定json[0].keys()
+
+
+def test_get日銷售():
+    '''
+    查詢 7/8 donwon罐頭 銷售量
+    '''
+    # dongwon韓國東遠泡/菜鮪魚罐頭 7/8 銷售量是 43 jeffrey 人工查表 7/9
+    input_商品代號_日期 = {'商品代號':'01040053','日期':datetime.date(2022,7,8)}
+    ouput_銷售量 = 43
+
+    銷售量 = 0
+    # 銷售量 = get日銷售(**input_商品代號_日期)
+    assert ouput_銷售量 == 銷售量
+
+def test_get週銷售():
+    '''
+    查詢 七月第一週 picknic綠咖喱蝦風/味杯麵 銷售量
+    '''
+    # picknic綠咖喱蝦風/味杯麵 7月 week 1 銷售量是 300 + 300 = 600
+    input_商品代號_日期 = {'商品代號': '01040053',
+                     '資料年月': datetime.date(2022,7,1),'第幾週':1}
+    output_週銷售量 = 300 + 300
+    週銷售量 = 0
+    # 週銷售量 = get銷售量(資料年月,第幾週,商品代號)
+    assert output_週銷售量 == 週銷售量
+
+
+def test_get尚存():
+    '''blocked！ by 不能讀取每日的尚存
+    查詢 七月 進銷存
+    '''
+
+# def test_上傳_報表到_gooleDrive():
+#     '''
+#     brief:上傳 excel 至 google drive
+#     steps:製作一張excel 名稱 更加好_銷售報表<today()>
+#     以此file為input 上傳_報表到_gooleDrive()
+#     call api get files 路徑圖
+#     assert 路徑格式 /更加好/latest 應該存在
+#     assert 路徑格式 /更加好/7月w1/更加好_銷售報表07.03 應該存在
+#     '''
+#     from openpyxl import Workbook
+#     更加好_銷售報表_today_wb = Workbook()
+#     更加好_銷售報表_today_path = f'更加好_銷售報表{datetime.date.today().strftime("%m.%d")}.xlsx'
+#     更加好_銷售報表_today_wb.save(更加好_銷售報表_today_path)
+#
+#     # 上傳_報表到_gooleDrive(更加好_銷售報表_today_path)
+#
+#     # call api
+#
+#
