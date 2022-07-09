@@ -1,4 +1,5 @@
-def test_填表_happy():
+
+def test_整合測試_填表():
     """填寫更加好報表"""
     # wb = 執行主程式()
     from openpyxl import Workbook
@@ -42,3 +43,21 @@ def test_填表_happy():
         更加好報表_機器人_週銷售row.append(row)
 
     assert 更加好報表_機器人_週銷售row == 更加好報表_手打_週銷售row
+
+def test_整合測試_更新config():
+    """
+    進去google drive 填寫 config
+    點擊發動，讓機器人跑一遍
+    確認報表如預期產生
+    """
+    assert True
+
+def test_讀取gooleDrive上config():
+    """call ,確認和 config 同構"""
+    下載的設定json = None
+    from 填表 import 讀取googleDrive上的config
+    下載的設定json= 讀取googleDrive上的config()
+    import json
+    設定_f = open('設定.json')
+    設定 = json.load(設定_f)
+    assert 設定[0].keys() == 下載的設定json[0].keys()
