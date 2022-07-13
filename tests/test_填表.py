@@ -8,6 +8,7 @@ def test_整合測試_填表():
     from openpyxl import Workbook
     更加好報表_機器人_wb = Workbook()
     更加好報表_機器人 = 更加好報表_機器人_wb.active
+    # 更加好報表_機器人 = 執行主程式()
     """驗證填寫前後"""
     from openpyxl import load_workbook
     更加好報表_手打_wb = load_workbook('更加好_銷售報表07.03拷貝.xlsx')
@@ -46,6 +47,62 @@ def test_整合測試_填表():
         更加好報表_機器人_週銷售row.append(row)
 
     assert 更加好報表_機器人_週銷售row == 更加好報表_手打_週銷售row
+
+def test_整合測試_填表2():
+    '''填寫啵獅報表'''
+
+    from openpyxl import Workbook
+    啵獅報表_機器人_wb = Workbook()
+    啵獅報表_機器人 = 啵獅報表_機器人_wb.active
+    # 啵獅報表_機器人 = 執行主程式()
+    """驗證填寫前後"""
+    from openpyxl import load_workbook
+    try:
+        啵獅報表_手打_wb = load_workbook('7月/啵獅_銷售報表07.03拷貝.xlsx')
+    except :
+        啵獅報表_手打_wb = load_workbook('tests/7月/啵獅_銷售報表07.03.xlsx')
+    啵獅報表_手打 = 啵獅報表_手打_wb.active
+    
+    """日期正確"""
+    啵獅_日期cell位置 = {'min_row':10,'max_row':12,'min_col':3,'max_col':3+41}
+    啵獅報表_手打_日期rows = []
+    for row in 啵獅報表_手打.iter_rows(**啵獅_日期cell位置, values_only=True):
+        啵獅報表_手打_日期rows.append(row)
+    啵獅報表_機器人_日期rows = []
+    for row in 啵獅報表_機器人.iter_rows(**啵獅_日期cell位置, values_only=True):
+        啵獅報表_機器人_日期rows.append(row)
+    assert 啵獅報表_機器人_日期rows == 啵獅報表_手打_日期rows
+
+    """周銷售正確"""
+    啵獅_商品cell位置 = {'min_row': 13, 'max_row': 28, 'min_col': 3,
+                   'max_col': 3 + 41}
+    啵獅報表_手打_週銷售row=[]
+    for row in 啵獅報表_手打.iter_rows(**啵獅_商品cell位置, values_only=True):
+        啵獅報表_手打_週銷售row.append(row)
+    啵獅報表_機器人_週銷售row=[]
+    for row in 啵獅報表_機器人.iter_rows(**啵獅_商品cell位置, values_only=True):
+        啵獅報表_機器人_週銷售row.append(row)
+
+    assert 啵獅報表_機器人_週銷售row == 啵獅報表_手打_週銷售row
+
+    """商品價格正確"""
+    assert 啵獅報表_手打[f'B{15+4*0}'].value == 啵獅報表_機器人[f'B{15+4*0}'].value
+    assert 啵獅報表_手打[f'B{15+4*1}'].value == 啵獅報表_機器人[f'B{15+4*1}'].value
+    assert 啵獅報表_手打[f'B{15+4*2}'].value == 啵獅報表_機器人[f'B{15+4*2}'].value
+    assert 啵獅報表_手打[f'B{15+4*3}'].value == 啵獅報表_機器人[f'B{15+4*3}'].value
+
+    '''檔期正確'''
+    import string
+    assert 啵獅報表_手打[f'{string.ascii_uppercase[string.ascii_uppercase.index("C")+7*0]}4'].value == 啵獅報表_機器人[f'{string.ascii_uppercase[string.ascii_uppercase.index("C")+7*0]}4'].value
+    assert 啵獅報表_手打[f'{string.ascii_uppercase[string.ascii_uppercase.index("C")+7*1]}4'].value == 啵獅報表_機器人[f'{string.ascii_uppercase[string.ascii_uppercase.index("C")+7*1]}4'].value
+    assert 啵獅報表_手打[f'{string.ascii_uppercase[string.ascii_uppercase.index("C")+7*2]}4'].value == 啵獅報表_機器人[f'{string.ascii_uppercase[string.ascii_uppercase.index("C")+7*2]}4'].value
+    assert 啵獅報表_手打[f'{string.ascii_uppercase[string.ascii_uppercase.index("C")+7*3]}4'].value == 啵獅報表_機器人[f'{string.ascii_uppercase[string.ascii_uppercase.index("C")+7*3]}4'].value
+
+    """title 正確"""
+    啵獅報表_手打['A1'].value = 啵獅報表_機器人['A1'].value
+    啵獅報表_手打['A2'].value = 啵獅報表_機器人['A2'].value
+    啵獅報表_手打['A3'].value = 啵獅報表_機器人['A3'].value
+
 
 def test_整合測試_更新config():
     """！這是手工
