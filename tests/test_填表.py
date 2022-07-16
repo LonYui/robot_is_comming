@@ -106,51 +106,45 @@ def test_整合測試_填表2():
 
 def test_整合測試_更新config():
     """！這是手工
-    進去google drive 填寫 config
+    # 進去google drive 填寫 config
+    # 點擊發動，讓機器人跑一遍
+    # 確認報表如預期產生
+    local
+    進去robot_is_comming 打開設定.excel 填寫
     點擊發動，讓機器人跑一遍
     確認報表如預期產生
     """
     assert True
 
-def test_讀取gooleDrive上config():
+def test_讀取config():
     """call ,確認和 config 同構"""
     下載的設定json = None
-    from 填表 import 讀取googleDrive上的config
-    下載的設定json= 讀取googleDrive上的config()
+    from 填表 import 讀取config
+    下載的設定json= 讀取config()
     import json
-    設定_f = open('設定.json')
+    try:
+        設定_f = open('設定.json')
+    except:
+        設定_f = open('tests/設定.json')
     設定 = json.load(設定_f)
     assert 設定[0].keys() == 下載的設定json[0].keys()
 
 
 def test_get日銷售():
     '''
-    查詢 7/8 donwon罐頭 銷售量
+    查詢 7/16 穎軒　更加好三秒鈴鈴卷 / ９６ｇ（８條裝） 銷售量
     '''
-    # dongwon韓國東遠泡/菜鮪魚罐頭 7/8 銷售量是 43 jeffrey 人工查表 7/9
-    input_商品代號_日期 = {'商品代號':'01040053','日期':datetime.date(2022,7,8)}
-    ouput_銷售量 = 43
+    input_商品代號_file = {'商品代號': '3030044','file':'219720220716sal.csv'}
+    ouput_銷售量 = 109
 
     銷售量 = 0
-    # 銷售量 = get日銷售(**input_商品代號_日期)
+    # 銷售量 = get日銷售(**input_商品代號_file)
     assert ouput_銷售量 == 銷售量
 
-def test_get週銷售():
-    '''
-    查詢 七月第一週 picknic綠咖喱蝦風/味杯麵 銷售量
-    '''
-    # picknic綠咖喱蝦風/味杯麵 7月 week 1 銷售量是 300 + 300 = 600
-    input_商品代號_日期 = {'商品代號': '01040053',
-                     '資料年月': datetime.date(2022,7,1),'第幾週':1}
-    output_週銷售量 = 300 + 300
-    週銷售量 = 0
-    # 週銷售量 = get銷售量(資料年月,第幾週,商品代號)
-    assert output_週銷售量 == 週銷售量
 
-
-def test_get尚存():
-    '''blocked！ by 不能讀取每日的尚存
-    查詢 七月 進銷存
+def test_get進銷存():
+    ''' blocked by 資料
+    查詢 七月3號 更加好 進銷存
     '''
 
 # def test_上傳_報表到_gooleDrive():
