@@ -3,7 +3,7 @@
 github:https://github.com/LonYui
 '''
 import os
-from datetime import datetime
+import datetime
 
 
 def test_更新日銷售():
@@ -36,11 +36,17 @@ def test_更新日銷售():
 
 def test_ftp_每日銷售報表():
     '''下載本日檔案到db_test format:"219720220703sal.csv"'''
+    廠商編號s = [2197,2559]
+
+    os.system('cp test_更新日銷售_測試資料/設定.json  db_test')
+
     from 更新日銷售 import ftp_每日銷售報表
 
     ftp_每日銷售報表()
-    open(
-        f'db_test/2197{datetime.date.today().strftime("%Y%m%d")}sal.csv')
+    for 廠商編號 in 廠商編號s:
+        open(f'db_test/下載/{廠商編號}{datetime.date.today().strftime("%Y%m%d")}sal.csv')
+
+    os.system('rm db_test/設定.json ')
 
 
 
