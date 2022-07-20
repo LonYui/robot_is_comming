@@ -8,6 +8,12 @@ db_path=os.getenv('db_path') if os.getenv('db_path') else 'db' #default = db
 設定_f = open(f'{db_path}/設定.json')
 設定 = json.load(設定_f)
 
+def main():
+    ''
+
+if __name__ == "__main__":
+    main()
+
 def ftp_每日銷售報表():
     ''
     from ftplib import FTP
