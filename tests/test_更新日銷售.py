@@ -41,15 +41,21 @@ def test_更新日銷售():
 
 def test_ftp_每日銷售報表():
     '''下載本日檔案到db_test format:"219720220703sal.csv"'''
+    input_outputs=[datetime.datetime.today().isoformat(),'2022-07-03']
     廠商編號s = [2197,2559]
 
     os.system('cp test_更新日銷售_測試資料/設定.json  db_test')
 
     from 更新日銷售 import ftp_每日銷售報表
 
-    ftp_每日銷售報表()
-    for 廠商編號 in 廠商編號s:
-        open(f'db_test/下載/{廠商編號}{datetime.date.today().strftime("%Y%m%d")}sal.csv')
+    for input_output in input_outputs:
+        ftp_每日銷售報表(input_output)
+        for 廠商編號 in 廠商編號s:
+            open(
+                f'db_test/下載/{廠商編號}{input_output.strftime("%Y%m%d")}sal.csv')
+    # ftp_每日銷售報表()
+    # for 廠商編號 in 廠商編號s:
+    #     open(f'db_test/下載/{廠商編號}{datetime.datetime.today().strftime("%Y%m%d")}sal.csv')
 
     os.system('rm db_test/設定.json ')
     os.system('rm -r db_test/下載/')
