@@ -14,7 +14,7 @@ def test_更新日銷售():
     os.system('cp test_更新日銷售_測試資料/設定.json  db_test')
 
     from 更新日銷售 import main
-    main()
+    main('2022-07-03')
     _比對_byrow('更加好',11)
     _比對_byrow('匯恩',11)
     _比對_byrow('匯恩',11+3)
