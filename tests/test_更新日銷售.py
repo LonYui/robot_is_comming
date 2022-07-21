@@ -13,9 +13,11 @@ def test_更新日銷售():
     os.system('cp test_更新日銷售_測試資料/更加好_銷售報表07.02.xlsx  db_test/更加好_銷售報表07.xlsx')
     os.system('cp test_更新日銷售_測試資料/設定.json  db_test')
 
-    _比對('更加好',11)
-    _比對('匯恩',11)
-    _比對('匯恩',11+3)
+    from 更新日銷售 import main
+    main()
+    _比對_byrow('更加好',11)
+    _比對_byrow('匯恩',11)
+    _比對_byrow('匯恩',11+3)
 
 
     # 更加好報表_機器人_wb = load_workbook('tests/db_test/更加好_銷售報表07.xlsx')
@@ -41,7 +43,7 @@ def test_更新日銷售():
 
 def test_ftp_每日銷售報表():
     '''下載本日檔案到db_test format:"219720220703sal.csv"'''
-    input_outputs=[datetime.datetime.today().isoformat(),'2022-07-03']
+    input_outputs=[datetime.date.today().isoformat(),'2022-07-03']
     廠商編號s = [2197,2559]
 
     os.system('cp test_更新日銷售_測試資料/設定.json  db_test')
@@ -50,9 +52,10 @@ def test_ftp_每日銷售報表():
 
     for input_output in input_outputs:
         ftp_每日銷售報表(input_output)
+        日期_datetime = datetime.datetime.fromisoformat(input_output)
         for 廠商編號 in 廠商編號s:
             open(
-                f'db_test/下載/{廠商編號}{input_output.strftime("%Y%m%d")}sal.csv')
+                f'db_test/下載/{廠商編號}{日期_datetime.strftime("%Y%m%d")}sal.csv')
     # ftp_每日銷售報表()
     # for 廠商編號 in 廠商編號s:
     #     open(f'db_test/下載/{廠商編號}{datetime.datetime.today().strftime("%Y%m%d")}sal.csv')
@@ -80,7 +83,7 @@ def test_get_日銷售():
     os.system('rm db_test/下載/219720220703sal.csv') # 刪除測試資料
     os.system('rm db_test/設定.json ')
 
-def _比對(廠商, row):
+def _比對_byrow(廠商, row):
     '''todo 可以比對多個商品 且只讀取一個 config'''
     from openpyxl import load_workbook  # 執行主程式()
     報表_機器人_wb = load_workbook(f'tests/db_test/{廠商}_銷售報表07.xlsx')

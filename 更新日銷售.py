@@ -8,19 +8,22 @@ db_path=os.getenv('db_path') if os.getenv('db_path') else 'db' #default = db
 設定_f = open(f'{db_path}/設定.json')
 設定 = json.load(設定_f)
 
-def main():
+def main(date=datetime.date.today()):
     ''
 
 if __name__ == "__main__":
     main()
 
-def ftp_每日銷售報表():
+def ftp_每日銷售報表(日期=datetime.date.today().isoformat()):
     ''
+    日期_datetime = datetime.datetime.fromisoformat(日期)
     from ftplib import FTP
     ftp = FTP('pngscftpsec.tradevan.com.tw')
     for ptv in 設定:
-        file_name = f"{ptv['ptvcod']}{datetime.date.today().strftime('%Y%m%d')}sal.csv"
+        file_name = f"{ptv['ptvcod']}{日期_datetime.strftime('%Y%m%d')}sal.csv"
         ftp.login(ptv['ptvcod'], ptv['ftp密碼'])
+        if 日期 != datetime.date.today().isoformat():
+            ftp.cwd('Backup')
         ftp.retrbinary(f"RETR {file_name}",open(file_name, 'wb').write)
         os.system(f'mv {file_name} {db_path}/下載/{file_name}')
     ftp.close()
