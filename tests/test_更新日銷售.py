@@ -7,17 +7,17 @@ import datetime
 
 
 def test_更新日銷售():
-    '''跑 7/3 更新，確定更加好有更新'''
+    '''跑 7/4 更新，確定更加好有更新'''
 
     os.system('cp test_更新日銷售_測試資料/匯恩_銷售報表07.02.xlsx  db_test/匯恩_銷售報表07.xlsx') # 建立測試資料
     os.system('cp test_更新日銷售_測試資料/更加好_銷售報表07.02.xlsx  db_test/更加好_銷售報表07.xlsx')
     os.system('cp test_更新日銷售_測試資料/設定.json  db_test')
 
     from 更新日銷售 import main
-    main('2022-07-03')
-    _比對_byrow('更加好',11)
-    _比對_byrow('匯恩',11)
-    _比對_byrow('匯恩',11+3)
+    main('2022-07-04')
+    _比對_byrow('更加好', 11)
+    _比對_byrow('匯恩', 11)
+    _比對_byrow('匯恩', 11 + 3)
 
 
     # 更加好報表_機器人_wb = load_workbook('tests/db_test/更加好_銷售報表07.xlsx')
@@ -40,6 +40,9 @@ def test_更新日銷售():
     os.system('rm db_test/匯恩_銷售報表07.xlsx ')     # 刪除測試資料
     os.system('rm db_test/更加好_銷售報表07.xlsx ')     # 刪除測試資料
     os.system('rm db_test/設定.json ')
+    os.system('rm -r db_test/下載/')
+    os.system('mkdir db_test/下載')
+
 
 def test_ftp_每日銷售報表():
     '''下載本日檔案到db_test format:"219720220703sal.csv"'''
@@ -67,8 +70,8 @@ def test_ftp_每日銷售報表():
 
 
 def test_get_日銷售():
-    '''get 更加好 7/3 日銷售 from sal'''
-    input_outputs=[({'貨號':'03030044','日期':'2022-07-03'},142)]  # 0.更加好 ,
+    '''get 更加好 7/2 日銷售 from sal'''
+    input_outputs=[({'貨號':'03030044','日期':'2022-07-02'},142)]  # 0.更加好 ,
 
     os.system('cp test_更新日銷售_測試資料/219720220703sal.csv db_test/下載/219720220703sal.csv') # 新增測試資料到ｄb
     os.system('cp test_更新日銷售_測試資料/設定.json  db_test')
@@ -83,21 +86,21 @@ def test_get_日銷售():
     os.system('rm db_test/下載/219720220703sal.csv') # 刪除測試資料
     os.system('rm db_test/設定.json ')
 
-def _比對_byrow(廠商, row):
+def _比對_byrow(廠商, row_num):
     '''todo 可以比對多個商品 且只讀取一個 config'''
     from openpyxl import load_workbook  # 執行主程式()
-    報表_機器人_wb = load_workbook(f'tests/db_test/{廠商}_銷售報表07.xlsx')
+    報表_機器人_wb = load_workbook(f'db_test/{廠商}_銷售報表07.xlsx')
     報表_機器人 = 報表_機器人_wb.active
-    報表_手打_wb = load_workbook(f'tests/7月/{廠商}_銷售報表07.03.xlsx')
+    報表_手打_wb = load_workbook(f'7月/{廠商}_銷售報表07.03.xlsx')
     報表_手打 = 報表_手打_wb.active
     報表_手打_日銷售row = []
-    for row in 報表_手打.iter_rows(min_row=row, max_row=row, min_col=3,
-                               max_col=3 + 41, values_only=True):
+    for row in 報表_手打.iter_rows(min_row=row_num, max_row=row_num, min_col=3,
+                                   max_col=3 + 41, values_only=True):
         報表_手打_日銷售row.append(row)
     報表_機器人_日銷售row = []
-    for row in 報表_機器人.iter_rows(min_row=row, max_row=row,
-                                min_col=3,
-                                max_col=3 + 41,
-                                values_only=True):
+    for row in 報表_機器人.iter_rows(min_row=row_num, max_row=row_num,
+                                    min_col=3,
+                                    max_col=3 + 41,
+                                    values_only=True):
         報表_機器人_日銷售row.append(row)
     assert 報表_機器人_日銷售row == 報表_手打_日銷售row  # 日銷售正確
